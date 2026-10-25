@@ -11,7 +11,16 @@ pub(super) async fn collect() -> Option<Vec<Window>> {
     let out = tokio::time::timeout(
         std::time::Duration::from_mins(1),
         tokio::process::Command::new(bin)
-            .args(["-p", "/usage", "--output-format", "json", "--no-session-persistence"])
+            .args([
+                "-p",
+                "/usage",
+                "--output-format",
+                "json",
+                "--no-session-persistence",
+                "--strict-mcp-config",
+                "--mcp-config",
+                r#"{"mcpServers":{}}"#,
+            ])
             .current_dir(dirs::home_dir()?)
             .stdin(std::process::Stdio::null())
             .kill_on_drop(true)
